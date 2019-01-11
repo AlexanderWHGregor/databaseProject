@@ -1,0 +1,47 @@
+DROP DATABASE IF EXISTS agrego9assign2db;
+
+CREATE DATABASE agrego9assign2db;
+
+USE agrego9assign2db;
+
+GRANT USAGE ON *.* TO 'ta'@'localhost';
+DROP USER 'ta'@'localhost';
+CREATE USER 'ta'@'localhost' IDENTIFIED BY 'cs3319';
+GRANT ALL PRIVILEGES ON agrego9assign2db.* TO 'ta'@'localhost';
+FLUSH PRIVILEGES;
+
+SHOW TABLES;
+
+CREATE TABLE product(
+        productID CHAR(2) NOT NULL PRIMARY KEY,
+        description CHAR(30) NOT NULL,
+        costPerItem INT NOT NULL,
+        quantity INT NOT NULL);
+
+CREATE TABLE agent(
+        agentID CHAR(2) NOT NULL PRIMARY KEY,
+        firstName CHAR(30) NOT NULL,
+        lastName CHAR(30) NOT NULL,
+        city CHAR(15) NOT NULL,
+        commissionPercent INT NOT NULL);
+
+CREATE TABLE customer(
+        customerID CHAR(2) NOT NULL PRIMARY KEY,
+        firstName CHAR(30) NOT NULL,
+        lastName CHAR(30) NOT NULL,
+        city CHAR(15) NOT NULL,
+        phoneNumber CHAR(8) NOT NULL,
+        agentID CHAR(2),
+        FOREIGN KEY (agentID) REFERENCES agent(agentID));
+
+-- ALTER TABLE customer MODIFY agentID INT NOT NULL;
+
+CREATE TABLE purchases(
+        productID CHAR(2) NOT NULL,
+        customerID CHAR(2) NOT NULL,
+        quantityPurchased INT,
+        PRIMARY KEY (productID, customerID),
+        FOREIGN KEY (productID) REFERENCES product(productID),
+        FOREIGN KEY (customerID) REFERENCES customer(customerID));
+
+SHOW TABLES;
